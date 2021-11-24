@@ -26,11 +26,11 @@
 
 他也许还沉醉在等我表扬他的幻想中，立刻打开了他写的代码。列位请围观：代码如下↓
 
-![图片4.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/be02a25c2043478c8eb92a8f48f17236~tplv-k3u1fbpfcp-watermark.image?)
+![图片4.png](https://img-blog.csdnimg.cn/a536200d2043480d874f88683d64b3cf.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyd552A5aSn5YmN56uv5Yay6bit,size_17,color_FFFFFF,t_70,g_se,x_16)
 
 想必会引来大牛们一顿啪啪，这都写的啥...一坨坨的。他自豪的跟我说，一开始他想直接去UI组件库文档找看看有没有属性直接拿来用，但是发现那个版本的antd只有table内的滚动才可以设置头部固定，外层滚动还没有提供api，只能自己动手实现了，他开始设定了两种方案一个是使用position:absoluted另一个是fixed，后面他用了fixed，用了table里的antd提供的class来计算设置fixed的边界，后面都觉得不方便而且也不灵活，然后就想到在table上面给个空标签做锚点不设置高度，它的作用就是用来计算滚动边界的 scrollTops>far,嘿嘿这锚点一说还真有点眼前一亮，虽说增加了一个空标签，但是极大方便了距离的获取，点个赞。
 
-细看下，他还是思考了的，![]() offsetTop的获取并没有放在callback函数里，否者会增加不少的性能压力（引起重新渲染了）
+细看下，他还是思考了的，offsetTop的获取并没有放在callback函数里，否者会增加不少的性能压力（引起重新渲染了）
 
 ![图片5.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/58e15eaea9bb49aca543b274d6bb8f4f~tplv-k3u1fbpfcp-watermark.image?)
  
@@ -42,7 +42,7 @@
 
 看着他这样式写得越来越长，我试着点下他，于是跟他说，如果我后面要你在加更多的样式，你都这样写一起会不会太难看啦，而且一个callback函数写那么多功能逻辑是不是不符合函数的单一原则？另外，你将获取offsetTop的代码写在了useEffect里假如我的搜索条件增加了那你获取的高度是不是就不准了？
 
-比如点击展开查看更多的搜索条件![]()
+比如点击展开查看更多的搜索条件
 
 ![图片7.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e8502746421f47a6b6ba0ef42bc19184~tplv-k3u1fbpfcp-watermark.image?)
 
@@ -52,7 +52,7 @@
 
 同样的一顿修改 代码如下：
 
-![图片9.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4f07cc4ae2674828b9582dde935d9681~tplv-k3u1fbpfcp-watermark.image?)
+![图片9.png](https://img-blog.csdnimg.cn/1af4dc73586f4f7d88218cc46bd0a734.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyd552A5aSn5YmN56uv5Yay6bit,size_19,color_FFFFFF,t_70,g_se,x_16)
 
 这次他使用了useEffect的第二个参数监听了查询参数的展开与收起按钮的状态然后重新计算了offsetTop,同时也使用了useCallback来缓存获取的逻辑，这点可以说开始上道了。
 
@@ -70,7 +70,7 @@ antlayoutcontent.style.cssText = `height:${headerH}px;`，意图很明显就是�
 
 Hooks/useStickHeader/useStickHeader
 
-![图片11.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/17e6e6f8818b4537a0a8dcaf7632fc69~tplv-k3u1fbpfcp-watermark.image?)
+![图片11.png](https://img-blog.csdnimg.cn/42f4fbb102e44b37af854f24e1669a1d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyd552A5aSn5YmN56uv5Yay6bit,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 哟，这小伙还知道做了部分性能优化，比如使用了标记来消去固定后不必要的滚动逻辑，同时还利用了帧动画api requestAnimationFrame 来减轻浏览器主线程渲染压力。
 
@@ -99,7 +99,6 @@ requestAnimationFrame 会存在兼容性问题，对于我们主要是针对B端
 以下是每页500条数据的情况：
 
 ![图片17.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/682129983e8543d0ab3ed7d935c2e248~tplv-k3u1fbpfcp-watermark.image?)
-
 ![图片18.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f703c6d1b2ed4e77906149604e541022~tplv-k3u1fbpfcp-watermark.image?)
 
 从上图可见如果table列表的数据量太大，即时是用了GPU也还是会很明显的感觉到卡顿的
